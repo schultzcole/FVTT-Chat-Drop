@@ -19,18 +19,26 @@ Hooks.on("init", () => {
     // Define what happens on drop
     ChatLog.prototype._onDrop = async function (event) {
         event.preventDefault();
+
+        // Get the link from the drop data
         const data = JSON.parse(event.dataTransfer.getData("text/plain"));
         if (!data) return;
         const link = await createLink(data);
         if (!link) return;
 
+        // Insert the link in place of the currently selected text
         const chatBox = this.element.find("#chat-message");
-        const slicePoint = chatBox[0].selectionStart;
+        let chatBoxEl = chatBox[0];
+        const { selectionStart, selectionEnd } = chatBoxEl;
         const existingText = chatBox.val();
-        const preText = existingText.slice(0, slicePoint);
-        const postText = existingText.slice(slicePoint);
+        const preText = existingText.slice(0, selectionStart);
+        const postText = existingText.slice(selectionEnd);
         chatBox.val(`${preText}${link}${postText}`);
+
+        // Set the cursor location to the end of the newly inserted link
         chatBox.focus();
+        const newCaretPosition = selectionStart + link.length;
+        chatBoxEl.setSelectionRange(newCaretPosition, newCaretPosition);
     };
 });
 

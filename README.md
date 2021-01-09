@@ -1,6 +1,6 @@
-# FVTT Module Template Repo
+# Chat Drop - Drag and Drop Entities into Chat
 
-A template repository for easy creation of new modules.
+Allows users to drag entities from the world or compendia into the chat box to quickly link items in chat.
 
 ## License
 
